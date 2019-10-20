@@ -1,0 +1,141 @@
+
+
+TP2 
+
+2-5
+
+1)- lorsqu'on tape la commande make dans le shell il fait la compilation du fmain , function , et enfin le resultat exemple executable des deux fichier
+		
+		gcc -c main.c -o main.o
+		gcc -c function.c -o function.o
+		gcc main.o function.o -o example
+
+
+2)- rien de nouveaux just d'obtenir le fichier executable exepmle car les deux fichier main et function  deja compiler
+		
+		gcc main.o function.o -o example
+
+3)- aprés la modification du fichier function.c dans la ligne d'affichage du message , ensuite lorsqu'on fait la commande make dans le shell , on constate la recompilation du fichier function.c modifié , ensuite la commande d'obtention du fichier executable exemple .
+
+		gcc -c function.c -o function.o
+		gcc main.o function.o -o example
+
+
+4)- l'execution du commande make clean est equivalent à la commande  = rm -rf *.o exemple , qui supprime tout les fichiers d'extension .o et les fichier executable nommé exemple .
+
+2-6
+
+
+1)- lorsqu'on tape la commande make -f Makefile2 , le systeme compile le main et la function et puis l'obtention du fichier exemple .
+
+		compilation de main.c :
+		gcc -o main.o -c main.c
+		compilation de function.c :
+		gcc -o function.o -c function.c
+		linkage :
+		gcc -o example main.o function.o
+
+2)- rien à faire pour all pour tout les fichiers , car il sont déja compiler depuis la modification original .
+
+3)- compilation du main et l'obtention final du fichier executable  et on constate l'absence du compilation du function méme si le fichier function.h est modifié .
+et cela grace à le lien entre le main et la function , alors la compilation du fichier main fait appel au code  en bas qui compile aussi le fichier function .
+
+		main.o : function.h
+		$(PROG) : $(OBJS)
+		@echo linkage :
+		$(CC) -o $@ $^
+
+4)- la commande make -f Makefile2 clean , fait appel à la commande $(RM) -rf *.o $(PROG) sans oublier que (RM) et (PROG) sont déja prédefinis au debut du code ( RM = rm ( commande de suppression )) , (PROG = le fichier executable example ) .
+
+2-7 
+
+1)- l'execution du commande scons , lit le script qui contient les fichiers cible à compiler main , function , et enfin le fichier executable example .
+
+		scons: Reading SConscript files ...
+		scons: done reading SConscript files.
+		scons: Building targets ...
+		gcc -o main.o -c main.c
+		gcc -o function.o -c function.c
+		gcc -o example main.o function.o function.h
+		scons: done building targets.
+
+
+2)- l"execution du commande scons pour la deuxiéme fois fait la lecture du script ecrit dans le fichier Sconstruct , mais lors de la compilation des fichiers function , main et l'executable il affiche le message " up to date " les fichiers déja compiler et mis à jour.
+
+
+
+		scons: Reading SConscript files ...
+		scons: done reading SConscript files.
+		scons: Building targets ...
+		scons: `.' is up to date.
+		scons: done building targets.
+
+3)- aprés la modification de la function "function.h" et l'execution du commande scons , le script du fichier Sconstruct recompile tout les fichiers , comme la premiére fois .
+		
+		scons: Reading SConscript files ...
+		scons: done reading SConscript files.
+		scons: Building targets ...
+		gcc -o main.o -c main.c
+		gcc -o function.o -c function.c
+		gcc -o example main.o function.o function.h
+		scons: done building targets.
+
+
+4)- la commande scons -c sert à supprimer les fichiers cible d'extension .o et le fichier executable example .
+
+		scons: Reading SConscript files ...
+  		scons: done reading SConscript files.
+		scons: Cleaning targets ...
+		Removed main.o
+		Removed function.o
+		Removed example
+		scons: done cleaning targets.
+
+2-8
+
+
+1)- l'execution du commande Rake compile les trois fichiers , main et function et enfin l'obtention du fichier executable example qui contient l'affichage du message " Hello $user"
+
+		cc -c -o function.o function.c
+		cc -c -o main.o main.c
+		cc -o example function.o main.o
+
+
+2)- lorsqu'on tape la commande Rake une autre fois , on remarque que rien n'affiche sur le terminal .
+
+3)- compilation just des deux fichiers main et le fichier resultat executable example , le fichier function modfié n'a pas été compiler car y'a une dependance entre le fichier main et le  fichier function .
+		
+		file ’main.o’ => [’main.c’, ’function.h’]
+		file ’function.o’ => [’function.c’]
+
+4)-rake clean supprime les fichiers d'extension .o et le fichier executable example .
+
+
+2-9 
+
+au debut il faut ajouter " includeantruntime="false" " à labalise <javac> 
+
+1)- le systemme definit le fichier de compilation ( build file) /build.xml aprés  creer le dossier build à l'aide du commande mkdir , et le systemem mettre dedans les fichier class java et main , ensuite la compilation des deux fichiers function et main .
+
+2)- lorsqu'on execute la commande pour la deuxiéme fois le systéme definit just le fichier build /build.xml , il ne fait ni la compilation ni la creation du chemin.
+
+
+3)- aprés la modification du fichier Function.java la commande ant recompile le fichier modifié et il l'envoie au chemin du compilation déja créer /build 
+
+
+
+4)- ant dist sert à definir le fichier build compilation xml build.xml , ensuite la creation du chemin dist/lib et la creation du fichier jar /dist/lib/Myproject-20191O18.jar    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
